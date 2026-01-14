@@ -289,8 +289,9 @@ impl SecureStore {
         relation_status: RelationshipStatus,
         relation_vid: &str,
     ) -> Result<(), Error> {
+        let relation_vid = self.try_resolve_alias(relation_vid)?;
         self.modify_vid(vid, |resolved| {
-            resolved.set_relation_vid(Some(relation_vid));
+            resolved.set_relation_vid(Some(&relation_vid));
             let _ = resolved.replace_relation_status(relation_status);
 
             Ok(())
